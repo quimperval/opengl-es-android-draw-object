@@ -10,6 +10,8 @@ import android.opengl.GLSurfaceView.Renderer;
 import android.telecom.Call;
 
 import com.perval.openglfirsttries.glutils.entity.GlObject;
+import com.perval.openglfirsttries.glutils.entity.Piece;
+import com.perval.openglfirsttries.glutils.entity.PieceBuilder;
 import com.perval.openglfirsttries.glutils.shaders.ColorShader;
 
 import javax.microedition.khronos.egl.EGLConfig;
@@ -24,7 +26,7 @@ public class CRenderer implements Renderer {
     }
     private GlObject glObject;
     private ColorShader colorshader;
-
+    private Piece piece;
     private final float[] projectionMatrix = new float[16];
 
     @Override
@@ -33,7 +35,9 @@ public class CRenderer implements Renderer {
 
         //Initialize vertex data / array holder
         //The constructors has an inner call to vertexHolder
-        glObject = new GlObject();
+        //commented as the gl object is created in the build method
+        //glObject = new GlObject();
+        piece = PieceBuilder.build();
         //Initialize shaders, color shader is the one used for rendering triangles
         colorshader = new ColorShader(context);
 
@@ -55,7 +59,7 @@ public class CRenderer implements Renderer {
     @Override
     public void onSurfaceChanged(GL10 gl10, int width, int height) {
         glViewport(0,0, width, height);
-        final float aspectRatio = width>height ?
+        float aspectRatio = width>height ?
                 (float) width / (float) height :
                 (float) height / (float) width;
         //Set the aspect ration, call the projection matrix and call the orthoM method
@@ -71,12 +75,14 @@ public class CRenderer implements Renderer {
          * float far - the maximum range of the z-axis
          *
          */
+
+        aspectRatio = 300f;
         if(width>height){
             //Landscape
-            orthoM(projectionMatrix, 0, -aspectRatio, aspectRatio, -1f, 1f, -1f, 1f);
+            orthoM(projectionMatrix, 0, -aspectRatio, aspectRatio, -aspectRatio, aspectRatio, -1f, 1f);
         } else {
             //Portrait or square
-            orthoM(projectionMatrix, 0, -1f, 1f, -aspectRatio, aspectRatio, -1f, 1f);
+            orthoM(projectionMatrix, 0, -aspectRatio, aspectRatio, -aspectRatio, aspectRatio, -1f, 1f);
         }
     }
 
@@ -94,9 +100,11 @@ public class CRenderer implements Renderer {
          */
         colorshader.setUniforms(projectionMatrix, 0, 0, 1);
         //Bind shader to object with entities to be drawn
-        glObject.bindData(colorshader);
+        //glObject.bindData(colorshader);
         //Draw the arrays or call the method that does that
-        glObject.draw();
+        //glObject.draw();
+        //This does the bind and draw for each glObject
+        piece.bindAndDraw(colorshader);
 
     }
 }
