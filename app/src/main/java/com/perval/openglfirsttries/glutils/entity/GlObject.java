@@ -20,34 +20,8 @@ public class GlObject {
 
     private int mode;
     private int start;
-    public GlObject(){
-        float[] VERTEX_DATA = {
-                //Triangle fan
-               /* 0f,     0f,
-                -0.5f,  -0.8f,
-                0.5f,  -0.8f,
-                0.5f,   0.8f,
-                -0.5f,   0.8f,
-                -0.5f,  -0.8f*/
-                0f,0f,
-                0f,98.4f,
-                -36.5f,98.4f,
-                -36.5f,36.5f,
-                -98.4f,36.5f,
-                -98.4f,-36.5f,
-                -36.5f,-36.5f,
-                -36.5f,-98.4f,
-                0f,-98.4f,
-                36.5f,-98.4f,
-                36.5f,-36.5f,
-                98.4f,-36.5f,
-                98.4f,0f,
-                98.4f,36.5f,
-                36.5f,36.5f,
-                36.5f,98.4f,
-                -36.5f,98.4f
+    public GlObject(float[] VERTEX_DATA){
 
-        };
         this.start = 0;
         this.limit = VERTEX_DATA.length/(POSITION_COMPONENT_COUNT + TEXTURE_COORDINATES_COMPONENT_COUNT);
         this.mode = GL_TRIANGLE_FAN;
@@ -59,9 +33,6 @@ public class GlObject {
     }
 
     public void draw(){
-
-        int mStart = 0;
-        int mEnd = 6;
         Log.i("GL_Object", "Start "+ start );
         Log.i("GL_Object", "End "+ limit );
         glDrawArrays(mode, start, limit);
