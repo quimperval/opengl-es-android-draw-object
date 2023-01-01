@@ -41,28 +41,13 @@ public class CRenderer implements Renderer {
         //Initialize shaders, color shader is the one used for rendering triangles
         colorshader = new ColorShader(context);
 
-
-
-        //get the uColor Location or call the method that does that
-
-        //get the aPosition location or call the method that does that
-
-        //in the floatArray/Buffer set the position or call the method that does that.
-
-        //Call glVertexAttribPointer or call the method that does that for
-
-        //Call glEnableVertexAttribArray or call the method that does that
-
-        //get the uMatrix location or call the method that does that.
     }
 
     @Override
     public void onSurfaceChanged(GL10 gl10, int width, int height) {
         glViewport(0,0, width, height);
-        float aspectRatio = width>height ?
-                (float) width / (float) height :
-                (float) height / (float) width;
-        //Set the aspect ration, call the projection matrix and call the orthoM method
+
+
 
         /*orthoM
          *projectionMarix - float[] m - the destination array
@@ -76,13 +61,19 @@ public class CRenderer implements Renderer {
          *
          */
 
-        aspectRatio = 300f;
+        float boundingBoxWidth = 300;
+        float boundingBoxHeight = 300;
+
+        float aspectRatio;
+
         if(width>height){
             //Landscape
-            orthoM(projectionMatrix, 0, -aspectRatio, aspectRatio, -aspectRatio, aspectRatio, -1f, 1f);
+            aspectRatio = (float) width / (float) height;
+            orthoM(projectionMatrix, 0, -aspectRatio*boundingBoxHeight, aspectRatio*boundingBoxHeight, -boundingBoxHeight, boundingBoxHeight, -1f, 1f);
         } else {
             //Portrait or square
-            orthoM(projectionMatrix, 0, -aspectRatio, aspectRatio, -aspectRatio, aspectRatio, -1f, 1f);
+            aspectRatio = (float) height / (float) width;
+            orthoM(projectionMatrix, 0, -boundingBoxWidth, boundingBoxWidth, -boundingBoxWidth*aspectRatio, boundingBoxWidth*aspectRatio, -1f, 1f);
         }
     }
 
